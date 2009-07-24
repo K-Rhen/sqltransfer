@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqltransfer 
+	xmlns="http://www.topdesk.com" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.topdesk.com sqltransfer.xsd"
+>
+	<version number="1.0"/>
+	<execution>
+		<daily>
+			<time>05:00</time>
+		</daily>
+	</execution>
+ 	<sources>
+ 		<source>
+ 			<name>H2</name>
+ 			<database>H2</database>
+			<jdbc>
+				<driver>org.h2.Driver</driver>
+				<url>jdbc:h2:mem:source</url>
+				<user>sa</user>
+				<password></password>
+			</jdbc>
+ 		</source>
+	</sources>
+	<target>
+		<database>H2</database>
+		<jdbc>
+			<driver>org.h2.Driver</driver>
+			<url>jdbc:h2:target</url>
+			<user>sa</user>
+			<password></password>
+		</jdbc>
+		<sql>
+			<drop-table-syntax>drop table if exists %s</drop-table-syntax>
+		</sql>
+		<errors>
+			<drop-table-message>Table %S not found [42102-100]</drop-table-message>
+		</errors>
+	</target>
+	<typetranslation>
+		<type sqltype="12"	source="VARCHAR"		target="varchar"		length="true"/>
+		<type sqltype="4"	source="INTEGER"		target="integer"		length="false"/>
+		<type sqltype="16"	source="BOOLEAN"		target="boolean"		length="false"/>
+		<type sqltype="93"	source="TIMESTAMP"		target="timestamp"		length="false"/>
+		<type sqltype="-1"	source="TEXT"			target="text"			length="false"/>
+	</typetranslation>
+	<importtables>
+		<importtable>
+			<source_name>H2</source_name>
+			<query>select 'Test  successfull!' as test_string, '2008-08-01 13:32:45'::timestamp as test_timestamp</query>
+			<tablename>target_table</tablename>
+			<append>false</append>
+			<postqueries>
+				<query>
+					insert into target_table (test_string, test_timestamp) values ('Again successfull!', current_date())
+				</query>
+			</postqueries>
+		</importtable>
+	</importtables>
+</sqltransfer>
+<!-- 
+This is a list of a few of the most common data types, that Java knows for sql.
+
+java.sql.Types
+BIT 			=   -7;
+TINYINT 		=   -6;
+SMALLINT		=    5;
+INTEGER 		=    4;
+BIGINT 			=   -5;
+FLOAT 			=    6;
+REAL 			=    7;
+DOUBLE 			=    8;
+NUMERIC 		=    2;
+DECIMAL			=    3;
+CHAR			=    1;
+VARCHAR 		=   12;
+LONGVARCHAR 	=   -1;
+DATE 			=   91;
+TIME 			=   92;
+TIMESTAMP 		=   93;
+OTHER			= 1111;
+BOOLEAN 		=   16;
+-->

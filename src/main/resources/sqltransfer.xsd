@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified"
+	targetNamespace="http://www.topdesk.com" 
+	xmlns="http://www.topdesk.com"
+>
+	<xs:element name="ldap">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="server" type="xs:string"/>
+				<xs:element name="port" default="389">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minInclusive value="1" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="basedn" type="xs:string"/>
+				<xs:element name="user" type="xs:string"/>
+				<xs:element name="password" type="xs:string"/>
+				<xs:element name="pagesize" minOccurs="0" default="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minInclusive value="0" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="secure" type="xs:boolean" minOccurs="0" default="false"/>
+				<xs:element name="referral" minOccurs="0"  default="follow">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="ignore" />
+							<xs:enumeration value="follow" />
+							<xs:enumeration value="throw" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="jdbc">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="driver" type="xs:string"/>
+				<xs:element name="url" type="xs:string"/>
+				<xs:element name="user" type="xs:string"/>
+				<xs:element name="password" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="connectiongroup">
+		<xs:choice>
+			<xs:element ref="jdbc"/>
+			<xs:element ref="ldap"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="ldaptransfer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="contexts" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="context" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ldapquery" type="xs:string" minOccurs="0"/>
+				<xs:element name="attributes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="attribute" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="value">
+										<xs:simpleType>
+											<xs:restriction base="xs:integer">
+												<xs:minInclusive value="1" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="expand-rows" type="xs:boolean"/>
+									<xs:attribute name="type" default="varchar">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="varchar" />
+												<xs:enumeration value="filetime" />
+												<xs:enumeration value="binarystring" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="length" default="255">
+										<xs:simpleType>
+											<xs:restriction base="xs:integer">
+												<xs:minInclusive value="1" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="sql_or_ldap">
+		<xs:choice>
+			<xs:element name="query" type="xs:string"/>
+			<xs:element ref="ldaptransfer"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="query">
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element name="error" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="sqltransfer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="version">
+					<xs:complexType>
+						<xs:attribute name="number" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="1.0"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="execution">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="daily">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="time" type="xs:string" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="sources">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="source" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name" type="xs:string" minOccurs="0"/>
+										<xs:element name="database" type="xs:string"/>
+										<xs:group ref="connectiongroup"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="target">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="database" type="xs:string"/>
+							<xs:element ref="jdbc"/>
+							<xs:element name="sql" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="drop-table-syntax" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="errors">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="drop-table" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="head" type="xs:string"/>
+													<xs:element name="tablename" type="xs:string"/>
+													<xs:element name="tail" type="xs:string"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="drop-table-message" type="xs:string" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="prepare_database" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="query" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="typetranslation">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="type" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="sqltype" type="xs:string" use="required"/>
+									<xs:attribute name="source" type="xs:string" use="required"/>
+									<xs:attribute name="target" type="xs:string" use="required"/>
+									<xs:attribute name="length" type="xs:boolean" use="required"/>
+									<xs:attribute name="mindate" type="xs:date"/>
+									<xs:attribute name="maxdate" type="xs:date"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="importtables">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="importtable" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="prequeries" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="query" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="source_name" type="xs:string" minOccurs="0"/>
+										<xs:group ref="sql_or_ldap"/>
+										<xs:element name="tablename" type="xs:string"/>
+										<xs:element name="append" type="xs:boolean"/>
+										<xs:element name="postqueries" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="query" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
