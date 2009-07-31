@@ -1,3 +1,5 @@
 
 syntax: regexp
 \.db$
+syntax: regexp
+^target$
