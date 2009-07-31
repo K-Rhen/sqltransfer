@@ -16,14 +16,14 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -122,19 +122,13 @@ public final class SQLtransferXMLParser {
 
 	public SQLtransferXMLParser(File xmlFile, final File xsdFile) throws IOException {
 		try {
+			SchemaFactory schemaFactory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+			File schemaLocation = new File("sqltransfer.xsd");
+	        Schema schema = schemaFactory.newSchema(schemaLocation);			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setValidating(true);
+			factory.setSchema(schema);
 			factory.setNamespaceAware(true);
-			factory.setFeature("http://apache.org/xml/features/validation/schema", true);
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			builder.setEntityResolver(new EntityResolver() {
-				public InputSource resolveEntity(String publicID, String systemID) throws SAXException {
-					if (systemID.endsWith("sqltransfer.xsd") && xsdFile != null) {
-						return new InputSource(xsdFile.getAbsolutePath());
-					}
-					return null;
-				}
-			});
 			builder.setErrorHandler(new ErrorHandler() {
 				public void fatalError(SAXParseException exception) throws SAXException {
 				}
@@ -150,7 +144,6 @@ public final class SQLtransferXMLParser {
 					logger.error(err.getMessage());
 				}
 			});
-			
 			InputStream xmlStream = new FileInputStream(xmlFile);
 			
 			Document domtree = builder.parse(xmlStream);
