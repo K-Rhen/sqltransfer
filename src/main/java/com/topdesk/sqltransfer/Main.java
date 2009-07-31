@@ -39,7 +39,7 @@ public final class Main {
 	}
 
 	public static void run(String fileName, boolean runOnce, boolean debug) throws IOException, ClassNotFoundException, ParseException {
-		PropertyConfigurator.configure("logging.properties");
+		PropertyConfigurator.configure("etc/logging.properties");
 		logConfiguration(fileName);
 		
 		SQLtransferXMLParser parser = new SQLtransferXMLParser(new File(fileName), null);
