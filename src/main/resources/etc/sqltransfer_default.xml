@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqltransfer 
+	xmlns="http://www.topdesk.com" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.topdesk.com sqltransfer.xsd"
+>
+	<version number="1.0"/>
+<!--
+The execution of the transfer can be scheduled here. For now it is only
+possible to schedule it daily and at one or more times per day. More times 
+can be added by adding more time-elements.
+-->
+	<execution>
+		<daily>
+			<time>06:00</time>
+		</daily>
+	</execution>
+<!-- 
+Here you enter the information how to connect to the source database,
+where the data from will be transfered. It is possible to have multiple 
+sources, they should be separated with the extra tag 'name'.
+ -->
+ 	<sources>
+ <!-- 
+You can use a database or a directory-service as a source. For a database you 
+need to add a jdbc-element and for a directory-service you need to add a 
+ldap-element.
+ 
+For a JDBC-connection you need to define the driver, the url and if necessary 
+the username and password. Extra drivers for the connection have to be in the 
+classpath of the program (see readme.html).
+ -->
+		<source>
+			<name>H2</name>
+			<database>H2</database>
+			<jdbc>
+				<driver>org.h2.Driver</driver>
+				<url>jdbc:h2:source</url>
+				<user>sa</user>
+				<password></password>
+			</jdbc>
+		</source>
+ <!-- 
+For LDAP you need to define which server, the port, the baseDN and if necessary 
+the user and the password. For some LDAP-servers like Active Directory Services 
+from Microsoft extra settings can be needed, but these are not required and 
+therefore commented.
+ -->
+		<source>
+			<name>LDAP</name>
+			<database>LDAP</database>
+			<ldap>
+				<server>HOSTNAME</server>
+				<port>389</port>
+				<basedn>o=COMPANY</basedn>
+				<user>USERNAME</user>
+				<password>PASSWORD</password>
+<!-- 
+				<secure>true</secure>
+If your LDAP-server requires a secure connection. Default is false.
+
+				<pagesize>1000</pagesize>
+If your LDAP-server limits the returned results, you can use this property to 
+set the pagesize. The results will be retrieved in pages with this number of 
+results. This is probably only necessary for Active Directory. Default is 1000.
+
+				<referral>ignore</referral>
+This property sets the Context.REFERRAL environment property of the connection. 
+The default value is follow. 
+ -->
+			</ldap>
+		</source>
+	</sources>
+	<target>
+<!-- 
+Here you enter the information how to connect to the target database,
+where the data  will be transfered to.
+ -->
+		<database>H2</database>
+		<jdbc>
+			<driver>org.h2.Driver</driver>
+			<url>jdbc:h2:target</url>
+			<user>sa</user>
+			<password></password>
+		</jdbc>
+		<sql>
+<!-- 
+With the element drop-table-syntax you can control the way a table is dropped 
+in the target-database. It is used in the Java-function String.format, which 
+will translate %s with the table name.  
+ -->
+			<drop-table-syntax>drop table if exists %s</drop-table-syntax>
+		</sql>
+		<errors>
+<!-- 
+On each execution of the program, the table in the target database,
+which will contain the transfered data, needs to be deleted. The first
+time the table doesn't exist, so deleting the table could give an error.
+
+If the given error message corresponds to one of the given error messages, 
+then the program won't fail and can start the transfer. You can either 
+construct the message with the drop-table element or give it in the 
+format for the Java-function String.format, which will translate %s with 
+the table name. 
+ -->
+			<drop-table-message>Table %S not found [42102-100]</drop-table-message>
+			<drop-table>
+				<head>Table </head>
+				<tablename/>
+				<tail> not found [42102-100]</tail>
+			</drop-table>
+		</errors>
+<!-- 
+After opening a connection to the target-database, but before opening 
+connections to the source(s), it is possible to already execute some 
+queries on the target database to prepare it for the transfer. These 
+queries are executed, even if the connections to the source fail.
+
+A use-case could be that you drop a table which another program needs. 
+If a connection to a source fails, the table in the target table won't 
+exist and the other program will also fail, but won't be using old data.
+ -->
+		<prepare_database>
+			<query>
+				drop table test
+				<error>Table TEST not found [42102-100]</error>
+			</query>
+		</prepare_database>
+	</target>
+<!-- 
+The data types between databases are normally not the same and need to
+be translated. Here you can enter the data types from the source
+database and to which data type in the target database they need to be
+translated.
+
+Date objects differ on database systems, so you can have overflows 
+on certain systems. If you don't want the transfer to fail, you can supply 
+the lower and upper margin for the date. The resulting value will be null.
+
+		<type sqltype="93"	source="timestamp"		target="timestamp"		length="false" mindate="2008-07-29" maxdate="2008-08-02"/>
+
+
+ -->
+	<typetranslation>
+		<type sqltype="12"	source="varchar"		target="varchar"		length="true"/>
+		<type sqltype="4"	source="int4"			target="int4"			length="false"/>
+		<type sqltype="93"	source="timestamptz"	target="timestamptz"	length="false"/>
+		<type sqltype="93"	source="timestamp"		target="timestamp"		length="false" mindate="2008-07-29" maxdate="2008-08-02"/>
+		<type sqltype="16"	source="bool"			target="bool"			length="false"/>
+		<type sqltype="-1"	source="text"			target="text"			length="false"/>
+	</typetranslation>
+<!-- 
+Here you define which queries in the source lead to which table in the
+target database. It is possible to transfer the data of multiple
+queries. For adding more transfers the whole importtable-element must be added.
+ -->
+	<importtables>
+
+		<importtable>
+			<query>SELECT * FROM source_table</query>
+			<tablename>target_table</tablename>
+			<append>false</append>
+			<postqueries>
+				<query>
+					ALTER TABLE target_table ADD COLUMN new_column VARCHAR;
+				</query>
+				<query>UPDATE target_table SET column = 'new_information';</query>
+			</postqueries>
+		</importtable>
+
+		<importtable>
+			<ldaptransfer>
+				<contexts>
+					<context>ou=users</context>
+				</contexts>
+				<ldapquery>(objectClass=top)</ldapquery>
+				<attributes>
+					<attribute name="attribute1"/>
+					<attribute name="attribute2" value="1"/>
+					<attribute name="attribute3" expand-rows="true"/>
+					<attribute name="attribute4" type="filetime"/>
+				</attributes>
+			</ldaptransfer>
+			<tablename>target_table2</tablename>
+			<append>false</append>
+		</importtable>
+<!-- 
+		<importtable>
+
+Depending on the source you are retrieving information from, you have to define 
+either a query-element or a ldaptransfer-element.
+   
+For a JDBC-source you define the query that needs to be executed on the source 
+database.
+
+			<query>SELECT * FROM source_table</query>
+
+For a LDAP-source you have to define the following ldaptransfer-element.
+
+			<ldaptransfer>
+
+The element contexts is not required. It can be used to only transfer objects 
+from certain subgroups in the LDAP-servers. If it is not used, the baseDN will 
+be used for the base of the search. 
+
+				<contexts>
+					<context>ou=users</context>
+				</contexts>
+				
+The element ldapquery is not required. The ldapquery-element can be used to 
+filter the objects on the LDAP-server, for instance only objects with an 
+attribute objectClass with the value top. If it is not used, all objects will 
+returned.
+
+				<ldapquery>(objectClass=top)</ldapquery>
+
+Within the attributes-element you define from which attributes of an object the 
+values need to be transfered. A table will be created with the names of these 
+attributes as columns.
+
+In LDAP it is possible that an attribute contains multiple values. Default is 
+the first value retrieved, but it is also possible to retrieve the other values. 
+With the value-attribute you can define which value should be transferred. The 
+expand-rows-attribute can be used to retrieve all values from the attribute. A 
+new record is created for each value with the same value for the other 
+attributes. The expand-rows-attribute is only allowed for one attribute in a 
+ldaptransfer.
+
+Certain LDAP-servers like Microsoft Active Directory have there own value-types 
+which need a certain translation before using. There is now support for 
+OctetString and FileTime. The OctetString is a string of bytes, which will be 
+translated to a string with hexidecimal values. The FileTime is the count of 
+100 nanosecond intervals since 1601-01-01 and will be translated to a timestamp. 
+To use these type you need the type-attribute and make sure that you also have 
+the corresponding typetranslation.
+
+				<attributes>
+					<attribute name="attribute1"/>
+					<attribute name="attribute2" value="1"/>
+					<attribute name="attribute3" expand-rows="true"/>
+					<attribute name="attribute4" type="filetime"/>
+					<attribute name="attribute5" type="binarystring"/>
+				</attributes>
+			</ldaptransfer>
+
+The following elements are defined for both JDBC and LDAP sources.
+
+The name of the table in the target database.
+
+			<tablename>target_table</tablename>
+
+The name of the source database.
+
+			<source_name>source1</source_name>
+
+With the append option you can determine that the table with all its
+contents should be deleted or that the transfered data should be
+appended to the existing table. This comes in handy, if you have
+multiple sources for the same table (UNION).
+
+			<append>false</append>
+
+With pre and post queries you can alter the information in the table in the
+target database. You can use the full SQL-language of the target
+database. For instance you can create new tables with the information
+of the transfered table or change the columns or the data itself. Prequeries 
+are executed before the information is transfered and postqueries after the 
+transfer. With the tag 'error' you can specify one or more errors, that could be expected 
+and should be ignored.
+
+			<prequeries>
+				<query>CREATE target_table (id INTEGER);</query>
+			</prequeries>
+
+			<postqueries>
+				<query>
+					ALTER TABLE target_table ADD COLUMN new_column VARCHAR;
+					<error></error>
+				</query>
+				<query>UPDATE target_table SET column = 'new_information';</query>
+			</postqueries>
+		</importtable>
+ -->
+	</importtables>
+</sqltransfer>
+<!-- 
+This is a list of a few of the most common data types, that Java knows for sql.
+
+java.sql.Types
+BIT 			=   -7;
+TINYINT 		=   -6;
+SMALLINT		=    5;
+INTEGER 		=    4;
+BIGINT 			=   -5;
+FLOAT 			=    6;
+REAL 			=    7;
+DOUBLE 			=    8;
+NUMERIC 		=    2;
+DECIMAL			=    3;
+CHAR			=    1;
+VARCHAR 		=   12;
+LONGVARCHAR 	=   -1;
+DATE 			=   91;
+TIME 			=   92;
+TIMESTAMP 		=   93;
+OTHER			= 1111;
+BOOLEAN 		=   16;
+-->
