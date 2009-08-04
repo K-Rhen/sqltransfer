@@ -3,3 +3,5 @@ syntax: regexp
 \.db$
 syntax: regexp
 ^target$
+syntax: regexp
+^src/main/resources/examples/sqltransfer\.xsd$
