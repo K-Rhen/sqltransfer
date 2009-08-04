@@ -9,13 +9,31 @@
 			<outputDirectory>bin</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>src/main/resources</directory>
-			<outputDirectory>bin</outputDirectory>
+			<directory>target</directory>
+			<outputDirectory>lib</outputDirectory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/resources/etc</directory>
+			<outputDirectory>etc</outputDirectory>
 			<includes>
 				<include>logging.properties</include>
-				<include>sqltransfer_simpletest.xml</include>
+				<include>sqltransfer_default.xml</include>
 				<include>sqltransfer.xsd</include>
 			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/resources/examples</directory>
+			<outputDirectory>examples</outputDirectory>
+			<includes>
+				<include>sqltransfer_simpletest.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/resources/licences</directory>
+			<outputDirectory>licences</outputDirectory>
 		</fileSet>
 	</fileSets>
 	<dependencySets>
