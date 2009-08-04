@@ -28,18 +28,24 @@ public final class Main {
 			run(fileName, runOnce, debug);
 		}
 		catch (Exception e) {
-			logger.info("");
-			logger.info(String.format("Error (%s): ", e.getClass()));
-			logger.info("  " + e.getMessage());
-			if (debug) {
-				logger.error("", e);
+			if (logger.getAppender(Main.class.toString()) != null) {
+				logger.info("");
+				logger.info(String.format("Error (%s): ", e.getClass()));
+				logger.info("  " + e.getMessage());
+				if (debug) {
+					logger.error("", e);
+				}
+			}
+			else {
+				System.err.println(e);
 			}
 			System.exit(1);
 		}
 	}
 
 	public static void run(String fileName, boolean runOnce, boolean debug) throws IOException, ClassNotFoundException, ParseException {
-		PropertyConfigurator.configure("etc/logging.properties");
+		File logProperties = getFile("etc/logging.properties");
+		PropertyConfigurator.configure(logProperties.toURI().toURL());
 		logConfiguration(fileName);
 		
 		SQLtransferXMLParser parser = new SQLtransferXMLParser(new File(fileName), null);
@@ -54,6 +60,20 @@ public final class Main {
 		else {
 			sqlTransfer.runNow();
 		}
+	}
+
+	public static File getFile(String fileName) {
+		File file = new File(fileName);
+		if (!file.exists()) {
+			String baseDir = System.getProperty("basedir");
+			if (baseDir != null && !baseDir.isEmpty()) { 
+				file = new File(baseDir, fileName);
+			}
+		}
+		if (!file.exists()) {
+			throw new RuntimeException(String.format("Cannot find file %s.", file));
+		}
+		return file;
 	}
     
 	public static void logConfiguration(String filename) {
