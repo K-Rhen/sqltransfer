@@ -47,7 +47,7 @@
 					<programs>
 						<program>
 							<mainClass>com.topdesk.sqltransfer.Main</mainClass>
-							<name>app</name>
+							<name>sqltransfer</name>
 						</program>
 					</programs>
 				</configuration>

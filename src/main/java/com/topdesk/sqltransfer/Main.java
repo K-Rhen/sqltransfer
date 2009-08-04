@@ -16,7 +16,12 @@ public final class Main {
 
 	public static void main(String[] args) {
 		if (args.length == 0) {
-			System.out.println("Usage : see wrapper.conf or use: java Main <settings.xml> <optional runonce> <optional debug>");
+			System.out.println("Usage : sqltransfer <sqltransfer.xml> [args]");
+			System.out.println("	Please give the correct location of a valid xml for sqltransfer.");
+			System.out.println("");
+			System.out.println("Available args:");
+			System.out.println("	runonce	- just run sqltransfer once");
+			System.out.println("	debug	- run sqltransfer with more debug-info");
 			System.exit(1);
 		}
 		String fileName = args[0];
