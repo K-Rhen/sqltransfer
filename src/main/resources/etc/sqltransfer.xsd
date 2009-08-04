@@ -126,12 +126,13 @@
 							<xs:simpleType>
 								<xs:restriction base="xs:string">
 									<xs:enumeration value="1.0"/>
+									<xs:enumeration value="1.1"/>
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="execution">
+				<xs:element name="execution" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="daily">

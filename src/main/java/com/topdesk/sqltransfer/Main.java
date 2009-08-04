@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -57,13 +58,14 @@ public final class Main {
 		SQLtransferDefinition definition = parser.createPrepareImportDefinition();
 		
 		SQLtransfer sqlTransfer = new SQLtransfer(definition, debug, false);
-		if (!runOnce) {
-			for (Date date : parser.gatherTimes()) {
-				sqlTransfer.runLater(date);
-			}
+		List<Date> times = parser.gatherTimes();
+		if (runOnce || times.isEmpty()) {
+			sqlTransfer.runNow();
 		}
 		else {
-			sqlTransfer.runNow();
+			for (Date date : times) {
+				sqlTransfer.runLater(date);
+			}
 		}
 	}
 

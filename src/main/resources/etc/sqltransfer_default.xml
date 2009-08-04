@@ -4,11 +4,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.topdesk.com sqltransfer.xsd"
 >
-	<version number="1.0"/>
+	<version number="1.1"/>
 <!--
 The execution of the transfer can be scheduled here. For now it is only
 possible to schedule it daily and at one or more times per day. More times 
-can be added by adding more time-elements.
+can be added by adding more time-elements. After executing a transfer, 
+sqltransfer stays active and schedules the next transfer.
+
+This element isn't mandatory and can be left out. After the transfer 
+sqltransfer will exit. This can be useful when running sqltransfer with 
+a Linux cronjob or a Windows Scheduled Task.
 -->
 	<execution>
 		<daily>

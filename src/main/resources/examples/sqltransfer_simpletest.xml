@@ -4,12 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.topdesk.com sqltransfer.xsd"
 >
-	<version number="1.0"/>
-	<execution>
-		<daily>
-			<time>05:00</time>
-		</daily>
-	</execution>
+	<version number="1.1"/>
  	<sources>
  		<source>
  			<name>H2</name>

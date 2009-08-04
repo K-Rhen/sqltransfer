@@ -7,7 +7,7 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.topdesk.sqltransfer.Main"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="examples/sqltransfer_simpletest.xml runonce"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="examples/sqltransfer_simpletest.xml"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="sqltransfer"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:sqltransfer/src/main/resources}"/>
 </launchConfiguration>

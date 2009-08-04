@@ -210,11 +210,13 @@ public final class SQLtransferXMLParser {
 		List<Date> times = new ArrayList<Date>();
 		String today = JUST_THE_DATE_FORMAT.format(Calendar.getInstance().getTime());
 
-		Node execution = sqltransfer.getNode("execution");
-		Node daily = execution.getNode("daily");
-		for (Node time : daily.getNodes("time")) {
-			times.add(DATE_AND_TIME_FORMAT.parse(today + " " + time.getTextContent()));
-			logger.info("Prepare importtables scheduled at " + time.getTextContent());
+		if (sqltransfer.hasNode("execution")) {
+			Node execution = sqltransfer.getNode("execution");
+			Node daily = execution.getNode("daily");
+			for (Node time : daily.getNodes("time")) {
+				times.add(DATE_AND_TIME_FORMAT.parse(today + " " + time.getTextContent()));
+				logger.info("Prepare importtables scheduled at " + time.getTextContent());
+			}
 		}
 		return times;
 	}
