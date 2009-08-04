@@ -73,7 +73,7 @@ public final class Main {
 		File file = new File(fileName);
 		if (!file.exists()) {
 			String baseDir = System.getProperty("basedir");
-			if (baseDir != null && !baseDir.isEmpty()) { 
+			if (baseDir != null && !"".equals(baseDir)) { 
 				file = new File(baseDir, fileName);
 			}
 		}
