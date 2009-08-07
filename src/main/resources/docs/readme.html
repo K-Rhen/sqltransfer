@@ -1,0 +1,188 @@
+<html>
+<head>
+	<style>
+		body {font-family: helvetica}
+	</style>
+</head>
+<body>
+<h1>SQLtransfer</h1>
+<p>
+SQLtransfer is a small program written in Java, which can be used to transfer
+data from one database or directory-service to another database. Any database with an 
+JDBC or ODBC driver can be used to retrieve or write data. Furthermore you can retrieve 
+information from directory-services via LDAP. After the transfer it is
+possible to alter the information in the target database with the help
+of SQL-statements. 
+</p>
+<p>
+SQLtransfer can also be used for databases or drivers, which 
+don't have an extended query-language or options. After transferring 
+the data to a capable database, all wanted actions can easily be done 
+in this database.
+</p>
+<p>
+The program uses a SELECT-statement entered by the user to retrieve
+information from the source database. With the metadata of the
+resultset a table can be created in the target database and filled with
+the records form the source. All that is needed is a SELECT-statement
+and the name of the table in the target-database.
+</p>
+<p>
+For the use of the program knowledge is required about making
+JDBC-connections to databases and knowledge about the SQL languages of
+the source and target database. If you are going to retrieve information 
+from a directory-service, you also need to know about LDAP.
+</p>
+<p>
+The program is configured with an 
+<a href="../etc/sqltransfer_default.xml">XML-file</a>. An explanation of the
+options can be found in the file sqltransfer_default.xml.
+</p>
+<hr/>
+<h2>Running SQLtransfer</h2>
+<h3>On Linux</h3>
+<h3>On Windows</h3>
+
+<hr/>
+<h2>Working with SQLtransfer</h2>
+
+<h3>What does SQLtransfer do</h3>
+<p>
+<ul>
+	<li>executes a given query in the source database</li>
+	<li>determines metadata of result</li>
+	<li>create a table with the columns and types in the metadata and with the given tablename in the target database</li>
+	<li>inserts all the records of the source result in the target table</li>
+	<li>executes the postqueries to alter the information in the target database</li>
+</ul>
+</p>
+
+<h3>Logging of SQLtransfer</h3>
+<p>
+All actions of PrepareImportTables are logged in the log-file of the WHERE?.
+The queries executed and generated are also logged, so in case of problems one is able to determine the cause.
+Exceptions of the used databases are also shown here. 
+Sometimes the exceptions can be unclear, because the used databases give us no clear information, which makes resolving problems not easy. 
+</p>
+
+<hr>
+<h2>Installing a new JDBC-driver</h2>
+<p>
+New drivers for JDBC-connections can easily be added, so that support for new databases is possible. 
+You must obtain the driver of the manufacturer. 
+This driver (usually a jar-file) must be placed in the directory /lib of SQLtransfer.
+Edit BATCH
+</p>
+<h3>Edit shell-script</h3>
+<h3>Edit batch-file</h3>
+<p>
+Find in wrapper.conf the lines starting with:
+<pre>
+wrapper.java.classpath
+</pre>
+Add a new line here and increase the number of the last line with 1. 
+Further add the filename and the directory at the end. For example the driver for PostGreSQL postgresql-8.0-311.jdbc3.jar in the directory lib:
+<pre>
+wrapper.java.classpath.4=lib/postgresql-8.0-311.jdbc3.jar
+</pre>
+</p>
+<h3>Edit batch-file</h3>
+<p>
+In the file settings.xml you can enter the new properties for the driver (driver-class, url, username, password).
+<pre>
+		&lt;database&gt;PostGreSQL&lt;/database&gt;
+		&lt;jdbc&gt;
+			&lt;driver&gt;org.postgresql.Driver&lt;/driver&gt;
+			&lt;url&gt;jdbc:postgresql://HOSTNAME/DATABASENAME&lt;/url&gt;
+			&lt;user&gt;USERNAME&lt;/user&gt;
+			&lt;password&gt;PASSWORD&lt;/password&gt;
+		&lt;/jdbc&gt;
+</pre>
+</p>
+
+<hr>
+<h1>Explanation of the files and directories</h1>
+<table>
+	<tr>
+		<td style="font-style: italic;">classes</td>
+		<td>contains the class-files and source of SQLtransfer</td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">lib</td>
+		<td>contains the needed files for wrapper and JDBC-connections (jar-files)</td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">readme.html</td>
+		<td>this readme</td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">sqltransfer.xml</td>
+		<td>the file with the settings for SQLtransfer</td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">wrapper_license.txt</td>
+		<td>information about the license of the Wrapper</td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">wrapper.conf</td>
+		<td>in this file Wrapper is configured</td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">wrapper.exe</td>
+		<td>the program used to that executes the wrapper and runs SQLtransfer</td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">wrapper.log</td>
+		<td>the log-file of the wrapper, both Wrapper and SQLtransfer use this file for their logging</td>
+	</tr>
+</table>
+<hr>
+<h1></h1>
+<p>
+</p>
+<pre>
+Version 1.0: 
+- rewritten the parser for reading the settings from xml
+- now a xsd instead of a dtd for validating the xml
+- completed the rewrite from PrepareImportTables to SQLtransfer
+- added the prepare target database option 
+
+Version 0.9:
+- Support for getting information with LDAP added
+- now possible to define syntax for drop table statement
+
+Version 0.7
+- made multiple drop-table errors possible
+- added new element drop-table-message
+- made multiple pre- or postqueries errors possible
+- now uses length information in translationtypes
+- for users with less Java-knowledge just the error is printed and no stacktrace
+
+Version 0.6
+- created dtd for settings.xml
+
+Version 0.5
+- possibility of suppressing error for postquery
+- possibility of executing queries before the transfer
+- possibility of having multiple sources
+
+Version 0.4
+- code review and better internal structure
+
+Version 0.3
+- information of the record to be inserted is printed in the log
+- during the transfer a count of records is shown each 1000 records
+- with an error the information is repeated with a extra message
+
+Version 0.2
+- better format in settings.xml for translating types
+- length of for example text-fields (varchar) is now taken from the source database
+
+Version 0.1
+- initial version of PrepareImportTables
+
+- howto access
+ - hoe odbc
+ - hoe maak database
+ - enkele veel gebruikte statements
+</pre>

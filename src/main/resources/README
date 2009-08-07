@@ -1,0 +1,72 @@
+
+SQLtransfer
+ 
+
+What is it? 
+-----------
+
+This tool enables you to collect information from any database or datasource, 
+that can be reached via Java DataBase Connectivity and also supports retrieving 
+information from Directory Services via LDAP. After collecting the information 
+you can use SQL to transform the information in the way you need and want it.
+
+
+How?
+----
+
+If you want to see it in action, do the following in this directory on a command 
+line:
+
+Linux:   ./bin/sqltransfer examples/sqltransfer_simpletest.xml
+Windows: bin/sqltransfer examples/sqltransfer_simpletest.xml
+
+
+
+Why?
+----
+
+One part of my job was getting information from other databases into the database
+of the application I was working for. Sometimes I found some ancient database 
+types at customers, that you had to support and that our approach at that time was
+to demanding for these types of databases and connectors. My solution was then just 
+to get that information into a another type of database. This other database is 
+familiar to you and you can make it do anything you want, because you will know the 
+ins and outs.
+
+Another use-case is when the customer wants something strange that is not straight-
+forward and you have to manipulate the data before you insert it into your database. 
+You can do that now without interfering the source or target database. This way 
+you can make the transition of the information a clear process and before you do the
+real insert, you can see if the information is the way you want it.
+
+So in short, SQLtransfer makes my life easy for not so easy tasks.
+
+
+The Latest Version
+------------------
+
+Details of the latest version can be found on the SQLtransfer Project web site: 
+http://code.google.com/p/sqltransfer/
+
+
+Documentation
+-------------
+
+You can find documentation about this application in the directory docs.
+
+
+Licensing
+---------
+
+This software is licensed under the terms you may find in the file 
+named "LICENSE" in this directory.
+
+Licenses of used projects can be found in the directory licenses. I would like to 
+thank the Apache log4j project for making logging easy and the H2 Database project 
+for creating an easy but powerful database.
+  
+
+Thanks for using SQLtransfer.
+
+Remco Schoen
+http://code.google.com/p/sqltransfer/
