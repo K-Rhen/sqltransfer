@@ -123,8 +123,7 @@ public final class SQLtransferXMLParser {
 	public SQLtransferXMLParser(File xmlFile, final File xsdFile) throws IOException {
 		try {
 			SchemaFactory schemaFactory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-			File schemaLocation = Main.getFile("etc/sqltransfer.xsd");
-	        Schema schema = schemaFactory.newSchema(schemaLocation);			
+	        Schema schema = schemaFactory.newSchema(xsdFile);			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setSchema(schema);
 			factory.setNamespaceAware(true);

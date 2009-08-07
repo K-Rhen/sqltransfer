@@ -54,7 +54,8 @@ public final class Main {
 		PropertyConfigurator.configure(logProperties.toURI().toURL());
 		logConfiguration(fileName);
 		
-		SQLtransferXMLParser parser = new SQLtransferXMLParser(new File(fileName), null);
+		File schemaLocation = getFile("etc/sqltransfer.xsd");
+		SQLtransferXMLParser parser = new SQLtransferXMLParser(new File(fileName), schemaLocation);
 		SQLtransferDefinition definition = parser.createPrepareImportDefinition();
 		
 		SQLtransfer sqlTransfer = new SQLtransfer(definition, debug, false);
