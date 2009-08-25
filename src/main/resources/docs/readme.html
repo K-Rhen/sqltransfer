@@ -41,8 +41,19 @@ options can be found in the file sqltransfer_default.xml.
 <hr/>
 <h2>Running SQLtransfer</h2>
 <h3>On Linux</h3>
+<p>
+You can run SQLtransfer with the shell-script in the bin-folder:
+<pre>./bin/sqltransfer examples/sqltransfer_simpletest.xml</pre>
+</p>
+<p>
+Don't forget to make this file executable, if this isn't so:
+<pre>chmod +x sqltransfer</pre>
+</p>
 <h3>On Windows</h3>
-
+<p>
+You can run SQLtransfer with the batch file in the bin-folder:
+<pre>bin/sqltransfer examples/sqltransfer_simpletest.xml</pre>
+</p>
 <hr/>
 <h2>Working with SQLtransfer</h2>
 
@@ -69,9 +80,11 @@ Sometimes the exceptions can be unclear, because the used databases give us no c
 <h2>Installing a new JDBC-driver</h2>
 <p>
 New drivers for JDBC-connections can easily be added, so that support for new databases is possible. 
-You must obtain the driver of the manufacturer. 
-This driver (usually a jar-file) must be placed in the directory /lib of SQLtransfer.
-Edit BATCH
+You must obtain the driver of the manufacturer.<br/>
+This driver (usually a jar-file) must be placed in the lib-folder.
+</p>
+<p>
+After adding the jar-file, you must make SQLtransfer aware of the new driver. You can do this by editing the shell-script or batch-file.
 </p>
 <h3>Edit shell-script</h3>
 <h3>Edit batch-file</h3>
@@ -86,9 +99,9 @@ Further add the filename and the directory at the end. For example the driver fo
 wrapper.java.classpath.4=lib/postgresql-8.0-311.jdbc3.jar
 </pre>
 </p>
-<h3>Edit batch-file</h3>
+<h3>Edit sqltransfer.xml</h3>
 <p>
-In the file settings.xml you can enter the new properties for the driver (driver-class, url, username, password).
+In the file sqltransfer.xml you can enter the new properties for the driver (driver-class, url, username, password).
 <pre>
 		&lt;database&gt;PostGreSQL&lt;/database&gt;
 		&lt;jdbc&gt;
@@ -104,36 +117,36 @@ In the file settings.xml you can enter the new properties for the driver (driver
 <h1>Explanation of the files and directories</h1>
 <table>
 	<tr>
-		<td style="font-style: italic;">classes</td>
-		<td>contains the class-files and source of SQLtransfer</td>
+		<td style="font-style: italic;">bin</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">docs</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">etc</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td style="font-style: italic;">examples</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td style="font-style: italic;">lib</td>
-		<td>contains the needed files for wrapper and JDBC-connections (jar-files)</td>
+		<td></td>
 	</tr>
 	<tr>
-		<td style="font-style: italic;">readme.html</td>
-		<td>this readme</td>
+		<td style="font-style: italic;">licences</td>
+		<td></td>
 	</tr>
 	<tr>
-		<td style="font-style: italic;">sqltransfer.xml</td>
-		<td>the file with the settings for SQLtransfer</td>
+		<td style="font-style: italic;">LICENSE</td>
+		<td></td>
 	</tr>
 	<tr>
-		<td style="font-style: italic;">wrapper_license.txt</td>
-		<td>information about the license of the Wrapper</td>
-	</tr>
-	<tr>
-		<td style="font-style: italic;">wrapper.conf</td>
-		<td>in this file Wrapper is configured</td>
-	</tr>
-	<tr>
-		<td style="font-style: italic;">wrapper.exe</td>
-		<td>the program used to that executes the wrapper and runs SQLtransfer</td>
-	</tr>
-	<tr>
-		<td style="font-style: italic;">wrapper.log</td>
-		<td>the log-file of the wrapper, both Wrapper and SQLtransfer use this file for their logging</td>
+		<td style="font-style: italic;">README</td>
+		<td></td>
 	</tr>
 </table>
 <hr>
