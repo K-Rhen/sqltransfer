@@ -16,6 +16,14 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>src/main/resources</directory>
+			<outputDirectory>.</outputDirectory>
+			<includes>
+				<include>LICENSE</include>
+				<include>README</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>src/main/resources/etc</directory>
 			<outputDirectory>etc</outputDirectory>
 			<includes>
