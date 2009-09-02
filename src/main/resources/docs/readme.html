@@ -36,7 +36,7 @@ from a directory-service, you also need to know about LDAP.
 <p>
 The program is configured with an 
 <a href="../etc/sqltransfer_default.xml">XML-file</a>. An explanation of the
-options can be found in the file sqltransfer_default.xml.
+options can be found in the file sqltransfer_default.xml as comments.
 </p>
 <hr/>
 <h2>Running SQLtransfer</h2>
@@ -70,12 +70,11 @@ You can run SQLtransfer with the batch file in the bin-folder:
 
 <h3>Logging of SQLtransfer</h3>
 <p>
-All actions of PrepareImportTables are logged in the log-file of the WHERE?.
+All actions of SQLtransfer are logged in the log-files in the lib-folder.
 The queries executed and generated are also logged, so in case of problems one is able to determine the cause.
 Exceptions of the used databases are also shown here. 
 Sometimes the exceptions can be unclear, because the used databases give us no clear information, which makes resolving problems not easy. 
 </p>
-
 <hr>
 <h2>Installing a new JDBC-driver</h2>
 <p>
@@ -85,18 +84,28 @@ This driver (usually a jar-file) must be placed in the lib-folder.
 </p>
 <p>
 After adding the jar-file, you must make SQLtransfer aware of the new driver. You can do this by editing the shell-script or batch-file.
+As an example we will take the driver for PostgreSQL with the file-name postgresql-8.0-311.jdbc3.jar.
 </p>
 <h3>Edit shell-script</h3>
+<p>
+Find in the file <i>sqltransfer</i> the line starting with:
+<pre>
+CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/log4j-1.2.14.jar:"$REPO"/h2-1.1.113.jar:"$REPO"/sqltransfer-1.0-SNAPSHOT.jar
+</pre>
+Add at the end of this line you need to add the new driver with the location (for the lib-folder you can use the variable <i>"$REPO"</i>): 
+<pre>
+CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/log4j-1.2.14.jar:"$REPO"/h2-1.1.113.jar:"$REPO"/sqltransfer-1.0-SNAPSHOT.jar:"$REPO"/postgresql-8.0-311.jdbc3.jar
+</pre>
+</p>
 <h3>Edit batch-file</h3>
 <p>
-Find in wrapper.conf the lines starting with:
+Find in the file <i>sqltransfer.bat</i> the line starting with:
 <pre>
-wrapper.java.classpath
+set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\log4j-1.2.14.jar;"%REPO%"\h2-1.1.113.jar;"%REPO%"\sqltransfer-1.0-SNAPSHOT.jar
 </pre>
-Add a new line here and increase the number of the last line with 1. 
-Further add the filename and the directory at the end. For example the driver for PostGreSQL postgresql-8.0-311.jdbc3.jar in the directory lib:
+Add at the end of this line you need to add the new driver with the location (for the lib-folder you can use the variable <i>"%REPO%"</i>): 
 <pre>
-wrapper.java.classpath.4=lib/postgresql-8.0-311.jdbc3.jar
+set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\log4j-1.2.14.jar;"%REPO%"\h2-1.1.113.jar;"%REPO%"\sqltransfer-1.0-SNAPSHOT.jar;"%REPO%"\postgresql-8.0-311.jdbc3.jar
 </pre>
 </p>
 <h3>Edit sqltransfer.xml</h3>
@@ -150,7 +159,7 @@ In the file sqltransfer.xml you can enter the new properties for the driver (dri
 	</tr>
 </table>
 <hr>
-<h1></h1>
+<h1>Changelog</h1>
 <p>
 </p>
 <pre>
