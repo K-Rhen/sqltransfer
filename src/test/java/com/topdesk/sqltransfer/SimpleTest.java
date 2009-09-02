@@ -1,5 +1,7 @@
 package com.topdesk.sqltransfer;
 
+import java.io.File;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -16,7 +18,8 @@ public class SimpleTest extends TestCase {
 
     public void testApplication() {
     	try {
-    		System.setProperty("basedir", "src/main/resources");
+    		File workDir = new File(System.getProperty("user.dir") + "/src/main/resources");
+    		System.setProperty("basedir", workDir.getAbsolutePath());
 			Main.run("src/main/resources/examples/sqltransfer_simpletest.xml", false, false);
 
 			assertTrue(true);

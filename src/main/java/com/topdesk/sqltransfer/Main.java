@@ -50,11 +50,16 @@ public final class Main {
 	}
 
 	public static void run(String fileName, boolean runOnce, boolean debug) throws IOException, ClassNotFoundException, ParseException {
-		File logProperties = getFile("etc/logging.properties");
+		String baseDir = System.getProperty("basedir");
+		if (baseDir != null && !"".equals(baseDir)) { 
+			System.setProperty("user.dir", baseDir);
+		}
+
+		File logProperties = new File("etc/logging.properties");
 		PropertyConfigurator.configure(logProperties.toURI().toURL());
 		logConfiguration(fileName);
 		
-		File schemaLocation = getFile("etc/sqltransfer.xsd");
+		File schemaLocation = new File("etc/sqltransfer.xsd");
 		SQLtransferXMLParser parser = new SQLtransferXMLParser(new File(fileName), schemaLocation);
 		SQLtransferDefinition definition = parser.createPrepareImportDefinition();
 		
@@ -68,20 +73,6 @@ public final class Main {
 				sqlTransfer.runLater(date);
 			}
 		}
-	}
-
-	public static File getFile(String fileName) {
-		File file = new File(fileName);
-		if (!file.exists()) {
-			String baseDir = System.getProperty("basedir");
-			if (baseDir != null && !"".equals(baseDir)) { 
-				file = new File(baseDir, fileName);
-			}
-		}
-		if (!file.exists()) {
-			throw new RuntimeException(String.format("Cannot find file %s.", file));
-		}
-		return file;
 	}
     
 	public static void logConfiguration(String filename) {
