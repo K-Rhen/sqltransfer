@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public final class Main {
-	private static final String VERSION_ID = "0.9";
+	private static final String VERSION_ID = "1.0";
 	
 	static Logger logger = Logger.getLogger(Main.class);
 
