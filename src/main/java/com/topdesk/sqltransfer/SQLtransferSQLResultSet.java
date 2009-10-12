@@ -3,13 +3,17 @@ package com.topdesk.sqltransfer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.apache.log4j.Logger;
+
 public class SQLtransferSQLResultSet implements SQLtransferResultSet {
+	static Logger logger = Logger.getLogger(SQLtransferResultSet.class);
 	
 	@SuppressWarnings("unused")
 	private final Object finalizerGuardian = new Object() {
@@ -34,7 +38,10 @@ public class SQLtransferSQLResultSet implements SQLtransferResultSet {
 	public SQLtransferSQLResultSet(SQLtransferSQLConnection connection, ImportTable table) throws SQLtransferException {
 		statement = connection.createStatement();
 		try {
+			long begin = System.currentTimeMillis();
 			rs = statement.executeQuery(table.getQuery());
+	  		NumberFormat nf = NumberFormat.getInstance();
+			logger.info(String.format("    Duration : %s ms", nf.format(System.currentTimeMillis() - begin)));
 			metaData = connection.createMetaData(rs.getMetaData());
 		} 
 		catch (SQLException e) {
