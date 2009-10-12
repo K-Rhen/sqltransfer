@@ -197,7 +197,14 @@ public class SQLtransferWriter {
 
 			createTableStatement.append(columnName);
 			createTableStatement.append(" " + translationType.getTarget());
-			if (translationType.isLength() && ((columnType == 1) || (columnType == 12))) {
+			if (translationType.isLength() && 
+					(
+							(columnType == java.sql.Types.CHAR) || 
+							(columnType == java.sql.Types.VARCHAR) || 
+							(columnType == -15) || 
+							(columnType == -9)
+					)
+				) {
 				createTableStatement.append("(" + data.getDisplaySize() + ")");
 			}
 			// TODO decimals
