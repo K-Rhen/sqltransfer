@@ -9,7 +9,7 @@ import javax.naming.NamingException;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class LDAPConnectionData implements ConnectionData {
@@ -25,7 +25,7 @@ public class LDAPConnectionData implements ConnectionData {
 	private final boolean source;
 	private final String referral;
 
-	static Logger logger = Logger.getLogger(LDAPConnectionData.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LDAPConnectionData.class);
 
 	public String getReferral() {
 		return referral;
@@ -94,7 +94,7 @@ public class LDAPConnectionData implements ConnectionData {
 			String clearErrorMessage = "Got this error from LDAP: " + e.getMessage();
 			logger.info(clearErrorMessage);
 			logger.info("");
-			logger.info(e);
+			e.printStackTrace();
 			if (e.getMessage().indexOf("error code 49") > 0) {
 				clearErrorMessage += " Probably the username or password is incorrect.";
 			}

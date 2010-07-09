@@ -1,11 +1,11 @@
 package com.topdesk.sqltransfer;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SQLtransferLDAPConnection implements SQLtransferConnection {
 	private final LDAPConnectionData connectionData;
 	
-	static Logger logger = Logger.getLogger(SQLtransferLDAPConnection.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SQLtransferLDAPConnection.class);
 	
 	public SQLtransferLDAPConnection(LDAPConnectionData connection) {
 		this.connectionData = connection;

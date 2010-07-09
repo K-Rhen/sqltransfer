@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SQLtransferSQLConnection implements SQLtransferConnection {
 	Connection connection;
 
-	static Logger logger = Logger.getLogger(SQLtransferSQLConnection.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SQLtransferSQLConnection.class);
 
 	public SQLtransferSQLConnection(Connection connection) {
 		this.connection = connection;

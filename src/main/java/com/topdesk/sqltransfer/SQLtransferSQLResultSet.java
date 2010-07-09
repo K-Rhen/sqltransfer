@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SQLtransferSQLResultSet implements SQLtransferResultSet {
-	static Logger logger = Logger.getLogger(SQLtransferResultSet.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SQLtransferResultSet.class);
 	
 	@SuppressWarnings("unused")
 	private final Object finalizerGuardian = new Object() {

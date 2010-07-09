@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.MissingFormatArgumentException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SQLtransferWriter {
 	private final SQLtransferDefinition definition;
 	private final SQLtransferSQLConnection connection;
 
-	static Logger logger = Logger.getLogger(SQLtransferWriter.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SQLtransferWriter.class);
 
 	public SQLtransferWriter(SQLtransferDefinition definition) throws SQLtransferException {
 		this.definition = definition;

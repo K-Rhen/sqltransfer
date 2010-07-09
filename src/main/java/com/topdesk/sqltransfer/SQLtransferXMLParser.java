@@ -19,7 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -33,7 +33,7 @@ public final class SQLtransferXMLParser {
 
 	private final Node sqltransfer;
 
-	static Logger logger = Logger.getLogger(SQLtransferXMLParser.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SQLtransferXMLParser.class);
 	
 	class Node {
 		private final org.w3c.dom.Node node;

@@ -7,13 +7,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.LoggerFactory;
 
 public final class Main {
 	private static final String VERSION_ID = "1.0";
 	
-	static Logger logger = Logger.getLogger(Main.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
 		if (args.length == 0) {
@@ -34,7 +33,8 @@ public final class Main {
 			run(fileName, runOnce, debug);
 		}
 		catch (Exception e) {
-			if (logger.getAppender(Main.class.toString()) != null) {
+			// TODO check if logger is available
+			if (true) {
 				logger.info("");
 				logger.info(String.format("Error (%s): ", e.getClass()));
 				logger.info("  " + e.getMessage());
@@ -55,8 +55,8 @@ public final class Main {
 			System.setProperty("user.dir", baseDir);
 		}
 
-		File logProperties = new File("etc/logging.properties");
-		PropertyConfigurator.configure(logProperties.toURI().toURL());
+//		File logProperties = new File("etc/logging.properties");
+//		PropertyConfigurator.configure(logProperties.toURI().toURL());
 		logConfiguration(fileName);
 		
 		File schemaLocation = new File("etc/sqltransfer.xsd");

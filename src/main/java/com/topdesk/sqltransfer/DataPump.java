@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataPump {
 	private static final int LOGS_PER_LINE = 10;
@@ -15,7 +15,7 @@ public class DataPump {
 	private final List<ColumnMetaData> metaData;
 	private int numberOfRecordsInSource = 0;
 
-	static Logger logger = Logger.getLogger(DataPump.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(DataPump.class);
 	
 	public DataPump(SQLtransferSQLConnection connection, String insert, List<ColumnMetaData> metaData) throws SQLtransferException {
 		statement = connection.prepareStatement(insert);
@@ -60,7 +60,7 @@ public class DataPump {
 			statement.execute();
 		}
 		catch (SQLException e) {
-			logger.info(debugLog);
+			logger.info(debugLog.toString());
 			throw e;
 		}
 		return statement.getUpdateCount();

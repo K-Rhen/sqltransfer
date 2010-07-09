@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SQLConnectionData implements ConnectionData {
 	
@@ -14,7 +14,7 @@ public class SQLConnectionData implements ConnectionData {
 	private final String name;
 	private final boolean source;
 
-	static Logger logger = Logger.getLogger(SQLConnectionData.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SQLConnectionData.class);
 
 	public SQLConnectionData(String url, String user, String password, String name, boolean source) {
 		this.source = source;

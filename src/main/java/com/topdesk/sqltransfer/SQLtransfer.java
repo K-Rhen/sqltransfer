@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tiling.scheduling.Scheduler;
 import org.tiling.scheduling.SchedulerTask;
 
@@ -16,7 +16,7 @@ public class SQLtransfer {
 	private final SQLtransferDefinition definition;
 	private Scheduler scheduler = null;
 
-	static Logger logger = Logger.getLogger(SQLtransfer.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SQLtransfer.class);
 	
 	public SQLtransfer (SQLtransferDefinition definition, boolean debug, boolean embedded) {
     	this.definition = definition;
