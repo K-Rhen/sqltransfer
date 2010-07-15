@@ -37,17 +37,11 @@ public final class Main {
 			run(fileName, runOnce, debug);
 		}
 		catch (Exception e) {
-			// TODO check if logger is available
-			if (true) {
-				logger.info("");
-				logger.info(String.format("Error (%s): ", e.getClass()));
-				logger.info("  " + e.getMessage());
-				if (debug) {
-					logger.error("", e);
-				}
-			}
-			else {
-				System.err.println(e);
+			logger.info("");
+			logger.info(String.format("Error (%s): ", e.getClass()));
+			logger.info("  " + e.getMessage());
+			if (debug) {
+				logger.error("", e);
 			}
 			System.exit(1);
 		}
