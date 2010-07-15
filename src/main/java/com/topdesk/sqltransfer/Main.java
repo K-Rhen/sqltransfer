@@ -9,6 +9,10 @@ import java.util.List;
 
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
+
 public final class Main {
 	private static final String VERSION_ID = "1.0";
 	
@@ -55,8 +59,17 @@ public final class Main {
 			System.setProperty("user.dir", baseDir);
 		}
 
-//		File logProperties = new File("etc/logging.properties");
-//		PropertyConfigurator.configure(logProperties.toURI().toURL());
+		File logProperties = new File("etc/logging.xml");
+		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+	    
+	    try {
+	      JoranConfigurator configurator = new JoranConfigurator();
+	      configurator.setContext(lc);
+	      lc.reset(); 
+	      configurator.doConfigure(logProperties.toURI().toURL());
+	    } catch (JoranException je) {
+	       je.printStackTrace();
+	    }
 		logConfiguration(fileName);
 		
 		File schemaLocation = new File("etc/sqltransfer.xsd");
