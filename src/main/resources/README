@@ -62,7 +62,7 @@ This software is licensed under the terms you may find in the file
 named "LICENSE" in this directory.
 
 Licenses of used projects can be found in the directory licenses. I would like to 
-thank the Apache log4j project for making logging easy and the H2 Database project 
+thank the SLF4J and the Logback project for making logging easy and the H2 Database project 
 for creating an easy but powerful database.
   
 
