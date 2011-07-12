@@ -14,7 +14,7 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 
 public final class Main {
-	private static final String VERSION_ID = "1.0.2";
+	private static final String VERSION_ID = "1.0.3";
 	
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Main.class);
 
