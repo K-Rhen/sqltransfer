@@ -31,7 +31,7 @@
 			<directory>src/main/resources/etc</directory>
 			<outputDirectory>etc</outputDirectory>
 			<includes>
-				<include>logging.properties</include>
+				<include>logging.xml</include>
 				<include>sqltransfer_default.xml</include>
 				<include>sqltransfer.xsd</include>
 			</includes>
