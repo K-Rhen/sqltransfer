@@ -21,7 +21,12 @@ public final class SQLColumnMetaData implements ColumnMetaData {
 	}
 
 	public String getName() {
-		return name;
+		String result = name;
+		if (result != null) {
+			result = result.replace("-", "_");
+			result = result.replace(" ", "_");
+		}
+		return result;
 	}
 
 	public int getType() {
