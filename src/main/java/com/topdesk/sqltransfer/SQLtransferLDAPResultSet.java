@@ -1,7 +1,7 @@
 package com.topdesk.sqltransfer;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -294,7 +294,7 @@ public class SQLtransferLDAPResultSet implements SQLtransferResultSet {
 					// convert UNITS from (100 nano-seconds) to (milliseconds)
 					javaTime /= 10000;
 			 
-					object = new Date(javaTime);
+					object = new Timestamp(javaTime);
 				}
 				data.put(column.getName().toLowerCase(), column.getValue(object));
 			}
