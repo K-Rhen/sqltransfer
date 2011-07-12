@@ -62,8 +62,8 @@ public class SQLtransferLDAPResultSet implements SQLtransferResultSet {
 			setPageSizeBegin();
 
 			List<String> list = new ArrayList<String>();
-			for (ColumnMetaData column : this.metaData) {
-				list.add(column.getName());
+			for (LDAPColumnMetaData column : this.metaData) {
+				list.add(column.getNameLDAP());
 			}
 //			TODO attributen beperken
 //			String returnedAtts[] = (String[]) list.toArray();
