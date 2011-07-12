@@ -4,7 +4,7 @@
 	<groupId>com.topdesk.sqltransfer</groupId>
 	<artifactId>sqltransfer</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<name>sqltransfer</name>
 	<url>http://code.google.com/p/sqltransfer/</url>
 	<dependencies>
