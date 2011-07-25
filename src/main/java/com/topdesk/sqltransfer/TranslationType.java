@@ -1,6 +1,6 @@
 package com.topdesk.sqltransfer;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class TranslationType {
 	private final int sqltype;
@@ -8,8 +8,8 @@ public class TranslationType {
 	private final String target;		
 	private final boolean length;
 	private boolean limits = false;
-	private Date minimumDate = null;
-	private Date maximumDate = null;
+	private Timestamp minimumDate = null;
+	private Timestamp maximumDate = null;
 	
 	public TranslationType(int sqltype, String source, String target, boolean length) {
 		this.sqltype = sqltype;
@@ -41,22 +41,22 @@ public class TranslationType {
 		return target;
 	}
 
-	public Date getMinimumDate() {
+	public Timestamp getMinimumDate() {
 		return minimumDate;
 	}
 
 	public void setMinimumDate(java.util.Date minimumDate) {
 		this.limits = true;
-		this.minimumDate = new Date(minimumDate.getTime());
+		this.minimumDate = new Timestamp(minimumDate.getTime());
 	}
 
-	public Date getMaximumDate() {
+	public Timestamp getMaximumDate() {
 		return maximumDate;
 	}
 
 	public void setMaximumDate(java.util.Date maximumDate) {
 		this.limits = true;
-		this.maximumDate = new Date(maximumDate.getTime());
+		this.maximumDate = new Timestamp(maximumDate.getTime());
 	}
 
 	public boolean hasLimits() {
