@@ -26,6 +26,7 @@ import javax.naming.ldap.PagedResultsResponseControl;
 public class SQLtransferLDAPResultSet implements SQLtransferResultSet {
 		
 	private static final String BINARYSTRING = "BINARYSTRING";
+	private static final String BINARY = "BINARY";
 	private final List<LDAPColumnMetaData> metaData;
 	private NamingEnumeration<SearchResult> objectEnumeration;
 	private NamingEnumeration<?> attributeEnumeration = null;
@@ -51,7 +52,7 @@ public class SQLtransferLDAPResultSet implements SQLtransferResultSet {
 		
 		Set<String> binaryAttributes = new HashSet<String>();
 		for (LDAPColumnMetaData columnMetaData : metaData) {
-			if (BINARYSTRING.equals(columnMetaData.getTypeName())) {
+			if (BINARYSTRING.equals(columnMetaData.getTypeName()) || BINARY.equals(columnMetaData.getTypeName())) {
 				binaryAttributes.add(columnMetaData.getNameLDAP());
 			}
 		}
@@ -116,6 +117,9 @@ public class SQLtransferLDAPResultSet implements SQLtransferResultSet {
 			}
 			if (attribute.getType() == LDAPAttribute.Type.BINARYSTRING) {
 				typeName = BINARYSTRING;
+			}
+			if (attribute.getType() == LDAPAttribute.Type.BINARY) {
+				typeName = BINARY;
 			}
 			metaData.add(new LDAPColumnMetaData(name, attribute.getName(), typeName, type, displaySize, index, attribute.getValuePosition(), attribute.isExpandRows()));
 		}

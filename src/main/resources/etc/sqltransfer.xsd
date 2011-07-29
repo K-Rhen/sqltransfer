@@ -86,6 +86,7 @@
 												<xs:enumeration value="varchar" />
 												<xs:enumeration value="filetime" />
 												<xs:enumeration value="binarystring" />
+												<xs:enumeration value="binary" />
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>

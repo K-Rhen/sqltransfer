@@ -237,7 +237,8 @@ OctetString and FileTime. The OctetString is a string of bytes, which will be
 translated to a string with hexidecimal values. The FileTime is the count of 
 100 nanosecond intervals since 1601-01-01 and will be translated to a timestamp. 
 To use these type you need the type-attribute and make sure that you also have 
-the corresponding typetranslation.
+the corresponding typetranslation. Also supported are attributes with binary-
+content.
 
 				<attributes>
 					<attribute name="attribute1"/>
@@ -245,6 +246,7 @@ the corresponding typetranslation.
 					<attribute name="attribute3" expand-rows="true"/>
 					<attribute name="attribute4" type="filetime"/>
 					<attribute name="attribute5" type="binarystring"/>
+					<attribute name="attribute6" type="binary"/>
 				</attributes>
 			</ldaptransfer>
 

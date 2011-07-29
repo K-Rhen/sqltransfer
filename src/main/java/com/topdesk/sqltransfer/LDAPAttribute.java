@@ -10,7 +10,8 @@ public class LDAPAttribute {
 	public enum Type {
 		VARCHAR("varchar"),
 		FILETIME("filetime"),
-		BINARYSTRING("binarystring");
+		BINARYSTRING("binarystring"),
+		BINARY("binary");
 		
 		final String a;
 	
@@ -31,7 +32,10 @@ public class LDAPAttribute {
 			this.type = Type.VARCHAR;
 		}
 		else {
-			if ("binarystring".equals(type)){
+			if ("binary".equals(type)){
+				this.type = Type.BINARY;
+			}
+			else if ("binarystring".equals(type)){
 				this.type = Type.BINARYSTRING;
 			}
 			else {
